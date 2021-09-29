@@ -48,5 +48,26 @@ app.post("/hero", async (req, res) => {
     }
   });
 
+  app.get("/hero/:name", async (req, res) => {
+    const name = req.params.name;
+  
+    try {
+      const herofind = await Postgres.query(
+        "SELECT * FROM hero WHERE name=$1",
+        [name]
+      );
+      res.json({
+        status: "OK",
+        data: herofind.rows,
+      });
+    } catch (err) {
+      res.json({
+        message: err,
+      });
+    }
+  });
+
+
+
 
 app.listen( process.env.PGPORT,()=>( console.log("this server listing port:5432")))
